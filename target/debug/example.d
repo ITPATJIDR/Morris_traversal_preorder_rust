@@ -1,0 +1,1 @@
+/home/itpat/Code/Rust/Morris_traversal_preorder/target/debug/example: /home/itpat/Code/Rust/Morris_traversal_preorder/src/main.rs /home/itpat/Code/Rust/Morris_traversal_preorder/src/read_dir/mod.rs /home/itpat/Code/Rust/Morris_traversal_preorder/src/read_dir/read_dir.rs
