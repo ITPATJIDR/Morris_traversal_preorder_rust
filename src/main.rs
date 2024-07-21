@@ -1,13 +1,15 @@
 mod read_dir;
 mod morris_traversal;
 
-use std::path::Path;
+use std::cell::RefCell;
+use std::rc::Rc;
+
 use morris_traversal::read_file::{read_file, strip_prefix_from_paths};
-use morris_traversal::DirectoryNode;
+use morris_traversal::{remote_duplicate, Node};
 
 fn main() {
     // let folder_path = Path::new("/home/itpat/Code/Rust/modern-desktop-app-template");
-    let path = "/Users/itpat/Code/Morris_traversal_preorder_rust/test.txt";
+    let path = "/Users/itpat/Code/Rust/Morris_traversal_preorder_rust/test.txt";
     let prefix = "/home/itpat/Code/Rust/modern-desktop-app-template/";
     let mut split_path:Vec<Vec<String>>= Vec::new();
 
@@ -35,7 +37,10 @@ fn main() {
         }
     }
 
-    println!("{:?}",split_path);
-    let tree:DirectoryNode = DirectoryNode::create_tree();
+    let root:Rc<RefCell<Node>> = Node::new("/home");
+    let left_child:Rc<RefCell<Node>> = Node::new("/test.js");
+    let right_child:Rc<RefCell<Node>> = Node::new("/src");
+
+    let x = remote_duplicate(split_path);
 
 }
