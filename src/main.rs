@@ -1,15 +1,19 @@
 mod read_dir;
 mod morris_traversal;
 
-use std::cell::RefCell;
+use std::borrow::BorrowMut;
+use std::cell::{Ref, RefCell};
+use std::collections::HashMap;
 use std::rc::Rc;
 
+use morris_traversal::binary_tree::Tree;
 use morris_traversal::read_file::{read_file, strip_prefix_from_paths};
 use morris_traversal::{remote_duplicate, Node};
 
 fn main() {
     // let folder_path = Path::new("/home/itpat/Code/Rust/modern-desktop-app-template");
-    let path = "/Users/itpat/Code/Rust/Morris_traversal_preorder_rust/test.txt";
+    // let path = "/Users/itpat/Code/Rust/Morris_traversal_preorder_rust/test.txt";
+    let path = "/home/itpat/Code/Rust/Morris_traversal_preorder/test.txt";
     let prefix = "/home/itpat/Code/Rust/modern-desktop-app-template/";
     let mut split_path:Vec<Vec<String>>= Vec::new();
 
@@ -37,10 +41,24 @@ fn main() {
         }
     }
 
-    let root:Rc<RefCell<Node>> = Node::new("/home");
-    let left_child:Rc<RefCell<Node>> = Node::new("/test.js");
-    let right_child:Rc<RefCell<Node>> = Node::new("/src");
+    let mut root:Tree = Tree::new();
+    root.insert(&prefix, false);
+    root.insert(&prefix, false);
 
-    let x = remote_duplicate(split_path);
+
+    let (same_path_file,not_same_path_file):(HashMap<Vec<String>, Vec<String>>, HashMap<usize, Vec<String>>)= remote_duplicate(split_path);
+
+    // for (path, file) in same_path_file.iter() {
+    //     for item in 0..path.len() {
+    //         if item == 0 {
+    //             println!("{}", path[item])
+    //         }
+    //     }
+    // }
+
+
+    // println!("Same path file : {:?}, ", same_path_file.len());
+    // println!("Not Same path file : {:?}, ", not_same_path_file.len());
+    // println!("Sum : {:?}", (same_path_file.len() + not_same_path_file.len()))
 
 }
