@@ -43,18 +43,24 @@ fn main() {
 
     let mut root:Tree = Tree::new();
     root.insert(&prefix, false);
-    root.insert(&prefix, false);
-
 
     let (same_path_file,not_same_path_file):(HashMap<Vec<String>, Vec<String>>, HashMap<usize, Vec<String>>)= remote_duplicate(split_path);
 
-    // for (path, file) in same_path_file.iter() {
-    //     for item in 0..path.len() {
-    //         if item == 0 {
-    //             println!("{}", path[item])
-    //         }
-    //     }
-    // }
+    for (path, file) in same_path_file.iter() {
+        for item in 0..path.len() {
+            println!("{}",path[item]);
+            if item == 0 {
+                root.insert(&path[item], false);
+            }
+        }
+        // println!("{}","--------------------------------------------------------");
+        // for item in 0..file.len() {
+        //     println!("{}",file[item])
+        // }
+        // println!("{}","========================================================");
+    }
+
+    println!("{:?}", root.get_root())
 
 
     // println!("Same path file : {:?}, ", same_path_file.len());
