@@ -1,12 +1,7 @@
-use std::collections::{HashMap};
+use std::collections::HashMap;
 use std::fs;
 use std::io::Result;
 
-
-struct dup_path {
-    folder: Vec<String>,
-    dup_file: Vec<String>,
-}
 
 pub fn read_file(path: &str) -> Result<String> {
     let contents: String = fs::read_to_string(path)?;
