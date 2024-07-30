@@ -1,35 +1,49 @@
-use std::{borrow::Borrow, cell::RefCell, path::is_separator, rc::Rc};
-
-use super::node::{Directory, Node, OnlyDirectory};
-
+use std::{borrow::BorrowMut, collections::HashMap};
 
 #[derive(Debug)]
-pub struct Tree {
-	root: Option<Rc<RefCell<Directory>>>
+pub struct Directory {
+    name: String,
+    subdirs: HashMap<String, Directory>,
+    files: Vec<String>,
 }
 
-pub trait BinaryTree {
-	fn new(path_name:String, node_parent:Option<String>) -> Self;
-	fn get_root(&self) -> Option<Rc<RefCell<Directory>>>;
-	fn insert(&mut self, path_name:String, node_parent:Option<String>);
+pub trait Tree {
+    fn new(name:&str) -> Self;
+    fn add_path(&mut self, parts: &[&str]);
+    fn print(&self, level: usize);
 }
 
-impl BinaryTree for Tree {
-	fn new(path_name:String, node_parent:Option<String>) -> Self{
-		let new_root = Directory::new(path_name, node_parent);
-		Tree {
-			root: Some(new_root)
-		}
-	}
+impl Tree for Directory {
+    fn new(name: &str) -> Self {
+        Self {
+            name: name.to_string(),
+            subdirs: HashMap::new(),
+            files: Vec::new(),
+        }
+    }
 
-	fn get_root(&self) -> Option<Rc<RefCell<Directory>>>{
-		self.root.clone()
-	}
+    fn add_path(&mut self, parts: &[&str]) {
+        if parts.len() == 1 {
+            self.files.push(parts[0].to_string());
+        } else {
+            let dir = self.subdirs.entry(parts[0].to_string()).or_insert_with(|| Directory::new(parts[0]));
+            dir.add_path(&parts[1..]);
+        }
+    }
 
-	fn insert(&mut self, path_name:String, node_parent:Option<String>){
-		if let Some(current) = self.root.borrow() {
-			current.borrow_mut().add_new_child(path_name, node_parent)
-		}
-	}
+    fn print(&self, level: usize) {
+        let indent = "  ".repeat(level);
+        if level > 0 {
+            println!("{}- /{}", indent, self.name);
+        }
+        for file in &self.files {
+            println!("{}  - {}", indent, file);
+        }
+        for subdir in self.subdirs.values() {
+            subdir.print(level + 1);
+        }
+    }
 }
+
+
 
